@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thiết Bị Điện Tử - Cửa Hàng Trực Tuyến</title>
+    <link rel="stylesheet" href="banhang.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div
+            class="logo"
+            onclick="app.navigateToPage('home')"
+            style="cursor: pointer"
+          >
+            <i class="fas fa-laptop-code"></i>
+            <span>TechStore</span>
+          </div>
+          <nav class="nav-menu">
+            <a href="#" class="nav-link" data-page="home">Trang Chủ</a>
+            <a href="#" class="nav-link" data-page="products">Sản Phẩm</a>
+            <a href="#" class="nav-link" data-page="wishlist">
+              <i class="fas fa-heart"></i> Yêu Thích
+              <span class="badge" id="wishlist-badge">0</span>
+            </a>
+            <a href="#" class="nav-link" data-page="cart">
+              <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+              <span class="badge" id="cart-badge">0</span>
+            </a>
+            <a href="#" class="nav-link" data-page="orders">Đơn Hàng</a>
+            <div class="user-menu">
+              <a
+                href="#"
+                class="nav-link"
+                data-page="account"
+                id="account-link"
+              >
+                <i class="fas fa-user"></i> Tài Khoản
+              </a>
+              <div class="user-dropdown" id="user-dropdown">
+                <a href="#" data-page="account">Thông Tin</a>
+                <a href="#" data-page="orders">Đơn Hàng</a>
+                <a href="#" id="logout-btn">Đăng Xuất</a>
+              </div>
+            </div>
+          </nav>
+          <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Home Page -->
+      <section id="home-page" class="page active">
+        <div class="hero-section">
+          <div class="container">
+            <h1>Thiết Bị Điện Tử Chính Hãng</h1>
+            <p>Điện thoại, Laptop, Tablet và Phụ Kiện</p>
+            <div class="search-box">
+              <input
+                type="text"
+                id="home-search"
+                placeholder="Tìm kiếm sản phẩm..."
+              />
+              <button
+                class="btn btn-primary"
+                onclick="app.navigateToPage('products')"
+              >
+                <i class="fas fa-search"></i> Tìm Kiếm
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="categories">
+            <div class="category-card" data-category="phone">
+              <i class="fas fa-mobile-alt"></i>
+              <h3>Điện Thoại</h3>
+            </div>
+            <div class="category-card" data-category="laptop">
+              <i class="fas fa-laptop"></i>
+              <h3>Laptop</h3>
+            </div>
+            <div class="category-card" data-category="tablet">
+              <i class="fas fa-tablet-alt"></i>
+              <h3>Tablet</h3>
+            </div>
+            <div class="category-card" data-category="accessory">
+              <i class="fas fa-headphones"></i>
+              <h3>Phụ Kiện</h3>
+            </div>
+          </div>
+          <div class="featured-products">
+            <h2>Sản Phẩm Nổi Bật</h2>
+            <div class="products-grid" id="featured-products"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products Page -->
+      <section id="products-page" class="page">
+        <div class="container">
+          <div class="page-header">
+            <h1>Sản Phẩm</h1>
+            <div class="search-filters">
+              <div class="search-bar">
+                <input
+                  type="text"
+                  id="product-search"
+                  placeholder="Tìm kiếm theo tên, model, từ khóa..."
+                />
+                <button class="btn btn-primary" id="search-btn">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <div class="filter-group">
+                <select id="filter-brand" class="filter-select">
+                  <option value="">Tất cả thương hiệu</option>
+                </select>
+                <select id="filter-category" class="filter-select">
+                  <option value="">Tất cả danh mục</option>
+                  <option value="phone">Điện Thoại</option>
+                  <option value="laptop">Laptop</option>
+                  <option value="tablet">Tablet</option>
+                  <option value="accessory">Phụ Kiện</option>
+                </select>
+                <select id="filter-sort" class="filter-select">
+                  <option value="name">Sắp xếp theo tên</option>
+                  <option value="price-asc">Giá tăng dần</option>
+                  <option value="price-desc">Giá giảm dần</option>
+                  <option value="rating">Đánh giá cao nhất</option>
+                </select>
+              </div>
+              <div class="spec-filters">
+                <input
+                  type="text"
+                  id="filter-ram"
+                  placeholder="RAM (GB)"
+                  class="spec-input"
+                />
+                <input
+                  type="text"
+                  id="filter-rom"
+                  placeholder="ROM (GB)"
+                  class="spec-input"
+                />
+                <input
+                  type="text"
+                  id="filter-cpu"
+                  placeholder="CPU"
+                  class="spec-input"
+                />
+                <input
+                  type="text"
+                  id="filter-screen"
+                  placeholder="Màn hình (inch)"
+                  class="spec-input"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="products-grid" id="products-grid"></div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </section>
+
+      <!-- Product Detail Page -->
+      <section id="product-detail-page" class="page">
+        <div class="container">
+          <button
+            class="btn btn-secondary"
+            onclick="app.navigateToPage('products')"
+          >
+            <i class="fas fa-arrow-left"></i> Quay Lại
+          </button>
+          <div id="product-detail-content"></div>
+        </div>
+      </section>
+
+      <!-- Cart Page -->
+      <section id="cart-page" class="page">
+        <div class="container">
+          <h1>Giỏ Hàng</h1>
+          <div id="cart-content">
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-summary" id="cart-summary">
+              <div class="summary-row">
+                <span>Tạm tính:</span>
+                <span id="cart-subtotal">0₫</span>
+              </div>
+              <div class="summary-row">
+                <span>Phí vận chuyển:</span>
+                <span id="cart-shipping">30,000₫</span>
+              </div>
+              <div class="summary-row total">
+                <span>Tổng cộng:</span>
+                <span id="cart-total">0₫</span>
+              </div>
+              <button class="btn btn-primary btn-large" id="checkout-btn">
+                Thanh Toán
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Wishlist Page -->
+      <section id="wishlist-page" class="page">
+        <div class="container">
+          <h1>Danh Sách Yêu Thích</h1>
+          <div class="products-grid" id="wishlist-items"></div>
+        </div>
+      </section>
+
+      <!-- Orders Page -->
+      <section id="orders-page" class="page">
+        <div class="container">
+          <h1>Đơn Hàng Của Tôi</h1>
+          <div id="orders-list"></div>
+        </div>
+      </section>
+
+      <!-- Account Page -->
+      <section id="account-page" class="page">
+        <div class="container">
+          <div class="account-tabs">
+            <button class="tab-btn active" data-tab="login">Đăng Nhập</button>
+            <button class="tab-btn" data-tab="register">Đăng Ký</button>
+            <button class="tab-btn" data-tab="profile">Thông Tin</button>
+          </div>
+          <div class="tab-content active" id="login-tab">
+            <h2>Đăng Nhập</h2>
+            <form id="login-form" novalidate>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="login-email" />
+              </div>
+              <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="login-password" />
+              </div>
+              <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+            </form>
+          </div>
+          <div class="tab-content" id="register-tab">
+            <h2>Đăng Ký</h2>
+            <form id="register-form" novalidate>
+              <div class="form-group">
+                <label>Tài Khoản</label>
+                <input type="text" id="register-username" />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="register-email" />
+              </div>
+              <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="register-password" />
+              </div>
+              <div class="form-group">
+                <label>Xác nhận mật khẩu</label>
+                <input type="password" id="register-confirm-password" />
+              </div>
+              <button type="submit" class="btn btn-primary">Đăng Ký</button>
+            </form>
+          </div>
+          <div class="tab-content" id="profile-tab">
+            <h2>Thông Tin Tài Khoản</h2>
+            <form id="profile-form">
+              <div class="form-group">
+                <label>Họ và tên</label>
+                <input
+                  type="text"
+                  id="profile-name"
+                  placeholder="Nhập họ và tên đầy đủ"
+                />
+              </div>
+              <div class="form-group">
+                <label>Số điện thoại</label>
+                <input
+                  type="text"
+                  id="profile-phone"
+                  placeholder="0123456789"
+                />
+              </div>
+              <div class="form-group">
+                <label>gmail</label>
+                <input
+                  type="text"
+                  id="profile-email"
+                  placeholder="example@email.com"
+                />
+              </div>
+              <div class="form-group">
+                <label>Số nhà / Tên đường</label>
+                <input type="text" id="profile-street" />
+              </div>
+
+              <div class="form-group">
+                <label>Phường / Xã</label>
+                <input type="text" id="profile-ward" />
+              </div>
+
+              <div class="form-group">
+                <label>Quận / Huyện</label>
+                <input type="text" id="profile-district" />
+              </div>
+
+              <div class="form-group">
+                <label>Tỉnh / Thành phố</label>
+                <input type="text" id="profile-city" />
+              </div>
+              <button type="submit" class="btn btn-primary">Cập Nhật</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals -->
+    <div
+      id="modal-overlay"
+      class="modal-overlay"
+      onclick="if (event.target === this) app.closeModal();"
+    >
+      <div class="modal" id="payment-modal">
+        <div class="modal-header">
+          <h2>Thanh Toán</h2>
+          <button class="modal-close" onclick="app.closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-content">
+          <div class="payment-methods">
+            <label class="payment-option">
+              <input type="radio" name="payment" value="ewallet" checked />
+              <i class="fas fa-wallet"></i> Ví Điện Tử
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="momo" />
+              <i class="fas fa-mobile-alt"></i> Momo
+            </label>
+          </div>
+          <div class="payment-form" id="payment-form">
+            <div class="form-group">
+              <label>Số thẻ / Số ví</label>
+              <input
+                type="text"
+                id="payment-number"
+                placeholder="1234 5678 9012 3456"
+              />
+            </div>
+            <div class="form-group">
+              <label>Họ tên chủ thẻ</label>
+              <input type="text" id="payment-name" />
+            </div>
+            <div class="form-group">
+              <label>Ngày hết hạn</label>
+              <input type="text" id="payment-expiry" placeholder="MM/YY" />
+            </div>
+          </div>
+          <button class="btn btn-primary btn-large" id="confirm-payment-btn">
+            Xác Nhận Thanh Toán
+          </button>
+        </div>
+      </div>
+
+      <div class="modal" id="review-modal">
+        <div class="modal-header">
+          <h2>Đánh Giá Sản Phẩm</h2>
+          <button class="modal-close" onclick="app.closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-content">
+          <form id="review-form">
+            <div class="form-group">
+              <label>Tiêu đề</label>
+              <input type="text" id="review-title" required />
+            </div>
+            <div class="form-group">
+              <label>Xếp hạng (1-5 sao)</label>
+              <div class="rating-input">
+                <input
+                  type="number"
+                  id="review-rating"
+                  min="1"
+                  max="5"
+                  value="5"
+                  required
+                />
+                <div class="stars" id="review-stars">
+                  <i class="fas fa-star" data-rating="1"></i>
+                  <i class="fas fa-star" data-rating="2"></i>
+                  <i class="fas fa-star" data-rating="3"></i>
+                  <i class="fas fa-star" data-rating="4"></i>
+                  <i class="fas fa-star" data-rating="5"></i>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nội dung đánh giá</label>
+              <textarea id="review-content" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Gửi Đánh Giá</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal" id="return-modal">
+        <div class="modal-header">
+          <h2>Yêu Cầu Hoàn Tiền/Đổi Trả</h2>
+          <button class="modal-close" onclick="app.closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-content">
+          <form id="return-form">
+            <div class="form-group">
+              <label>Lý do</label>
+              <select id="return-reason" required>
+                <option value="">Chọn lý do</option>
+                <option value="defect">Sản phẩm lỗi</option>
+                <option value="wrong">Sai sản phẩm</option>
+                <option value="change-mind">Thay đổi ý định</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mô tả chi tiết</label>
+              <textarea id="return-description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="return-seal" required />
+                Sản phẩm còn nguyên seal/tem bảo hành
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Gửi Yêu Cầu</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Về Chúng Tôi</h3>
+            <p>Cửa hàng thiết bị điện tử chính hãng, uy tín</p>
+          </div>
+          <div class="footer-section">
+            <h3>Liên Hệ</h3>
+            <p>Email: support@techstore.vn</p>
+            <p>Hotline: 1900-xxxx</p>
+          </div>
+          <div class="footer-section">
+            <h3>Chính Sách</h3>
+            <a href="#">Bảo hành</a>
+            <a href="#">Đổi trả</a>
+            <a href="#">Vận chuyển</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="banhang.js"></script>
+  </body>
+</html>
