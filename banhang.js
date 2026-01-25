@@ -846,8 +846,14 @@ const app = {
 
     document.getElementById("profile-form")?.addEventListener("submit", (e) => {
       e.preventDefault();
-      this.handleUpdateProfile();
+      // Prevent default form submission
     });
+
+    document
+      .getElementById("update-profile-btn")
+      ?.addEventListener("click", () => {
+        this.handleUpdateProfile();
+      });
 
     document.getElementById("checkout-btn")?.addEventListener("click", () => {
       this.showPaymentModal();
@@ -1880,7 +1886,135 @@ const app = {
     this.switchTab("profile");
   },
 
+  validateProfileField(fieldName, value) {
+    const errors = [];
+
+    switch (fieldName) {
+      case "name":
+        if (!value) errors.push("Họ và tên không được để trống");
+        else if (value.length < 5)
+          errors.push("Họ và tên phải có trên 5 ký tự");
+        else if (value.length > 25)
+          errors.push("Họ và tên phải có dưới 25 ký tự");
+        else if (/[0-9]/.test(value))
+          errors.push("Họ và tên không được chứa số");
+        else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(value))
+          errors.push("Họ và tên không được chứa ký tự đặc biệt");
+        break;
+
+      case "phone":
+        if (!value) errors.push("Số điện thoại không được để trống");
+        else if (value.includes(" "))
+          errors.push("Số điện thoại không được chứa dấu cách");
+        else if (!value.startsWith("0"))
+          errors.push("Số điện thoại phải bắt đầu bằng số 0");
+        else if (!/^\d+$/.test(value))
+          errors.push("Số điện thoại chỉ được chứa chữ số");
+        else if (value.length !== 10)
+          errors.push("Số điện thoại phải có đúng 10 chữ số");
+        break;
+
+      case "email":
+        if (!value) errors.push("Email không được để trống");
+        else if (!value.endsWith("@email.com"))
+          errors.push("Email phải có đuôi @email.com");
+        else {
+          const emailName = value.replace("@email.com", "");
+          if (emailName.length < 5)
+            errors.push("Phần trước @email.com phải có trên 5 ký tự");
+          else if (!/[a-zA-Z]/.test(emailName))
+            errors.push("Phần trước @email.com phải có ít nhất 1 chữ cái");
+          else if (/[À-ỹ]/.test(emailName))
+            errors.push("Phần trước @email.com không được chứa dấu tiếng Việt");
+          else if (!/^[a-zA-Z0-9]+$/.test(emailName))
+            errors.push("Phần trước @email.com không được chứa ký tự đặc biệt");
+        }
+        break;
+
+      case "street":
+        if (!value) errors.push("Số nhà & tên đường không được để trống");
+        else if (!/^[a-zA-ZÀ-ỹ0-9\s]+$/.test(value))
+          errors.push("Số nhà & tên đường không được chứa ký tự đặc biệt");
+        break;
+
+      case "ward":
+        if (!value) errors.push("Phường / Xã không được để trống");
+        else if (/[0-9]/.test(value))
+          errors.push("Phường / Xã không được chứa số");
+        else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(value))
+          errors.push("Phường / Xã không được chứa ký tự đặc biệt");
+        break;
+
+      case "district":
+        if (!value) errors.push("Quận / Huyện không được để trống");
+        else if (/[0-9]/.test(value))
+          errors.push("Quận / Huyện không được chứa số");
+        else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(value))
+          errors.push("Quận / Huyện không được chứa ký tự đặc biệt");
+        break;
+
+      case "city":
+        if (!value) errors.push("Tỉnh / Thành phố không được để trống");
+        else if (/[0-9]/.test(value))
+          errors.push("Tỉnh / Thành phố không được chứa số");
+        else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(value))
+          errors.push("Tỉnh / Thành phố không được chứa ký tự đặc biệt");
+        break;
+    }
+
+    return errors;
+  },
+
+  displayFieldError(fieldName, errorMessages) {
+    const errorElement = document.getElementById(`error-${fieldName}`);
+    const inputElement = document.getElementById(`profile-${fieldName}`);
+
+    if (errorElement) {
+      if (errorMessages.length > 0) {
+        errorElement.textContent = errorMessages[0];
+        inputElement.classList.add("input-error");
+      } else {
+        errorElement.textContent = "";
+        inputElement.classList.remove("input-error");
+      }
+    }
+  },
+
   handleUpdateProfile() {
+    const fields = [
+      "name",
+      "phone",
+      "email",
+      "street",
+      "ward",
+      "district",
+      "city",
+    ];
+    let hasErrors = false;
+
+    // Clear previous success message
+    const successMessage = document.getElementById("success-message");
+    if (successMessage) successMessage.textContent = "";
+
+    // Validate all fields
+    for (const field of fields) {
+      const input = document.getElementById(`profile-${field}`);
+      const value = input.value.trim();
+      const errors = this.validateProfileField(field, value);
+
+      this.displayFieldError(field, errors);
+
+      if (errors.length > 0) {
+        hasErrors = true;
+      }
+    }
+
+    // If there are errors, stop here
+    if (hasErrors) {
+      return;
+    }
+
+    // Get values
     const nameInput = document.getElementById("profile-name");
     const phoneInput = document.getElementById("profile-phone");
     const emailInput = document.getElementById("profile-email");
@@ -1897,132 +2031,6 @@ const app = {
     const district = districtInput.value.trim();
     const city = cityInput.value.trim();
 
-    /* =======================
-     1️⃣ KHÔNG ĐƯỢC ĐỂ TRỐNG
-  ======================== */
-    if (!name)
-      return (alert("Họ và tên không được để trống"), nameInput.focus());
-    if (!phone)
-      return (alert("Số điện thoại không được để trống"), phoneInput.focus());
-    if (!email) return (alert("Email không được để trống"), emailInput.focus());
-    if (!street)
-      return (alert("Vui lòng nhập số nhà và tên đường"), streetInput.focus());
-    if (!ward) return (alert("Vui lòng nhập phường/xã"), wardInput.focus());
-    if (!district)
-      return (alert("Vui lòng nhập quận/huyện"), districtInput.focus());
-    if (!city)
-      return (alert("Vui lòng nhập tỉnh/thành phố"), cityInput.focus());
-
-    /* =======================
-     2️⃣ HỌ VÀ TÊN
-  ======================== */
-    if (name.length < 5)
-      return (alert("Họ và tên phải có trên 5 ký tự"), nameInput.focus());
-    if (name.length > 25)
-      return (alert("Họ và tên phải có dưới 25 ký tự"), nameInput.focus());
-    if (/[0-9]/.test(name))
-      return (alert("Họ và tên không được chứa số"), nameInput.focus());
-    if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(name))
-      return (
-        alert("Họ và tên không được chứa ký tự đặc biệt"),
-        nameInput.focus()
-      );
-
-    /* =======================
-     3️⃣ SỐ ĐIỆN THOẠI
-  ======================== */
-    if (phone.includes(" "))
-      return (
-        alert("Số điện thoại không được chứa dấu cách"),
-        phoneInput.focus()
-      );
-    if (!phone.startsWith("0"))
-      return (
-        alert("Số điện thoại phải bắt đầu bằng số 0"),
-        phoneInput.focus()
-      );
-    if (!/^\d+$/.test(phone))
-      return (alert("Số điện thoại chỉ được chứa chữ số"), phoneInput.focus());
-    if (phone.length !== 10)
-      return (
-        alert("Số điện thoại phải có đúng 10 chữ số"),
-        phoneInput.focus()
-      );
-
-    /* =======================
-     4️⃣ EMAIL (GMAIL)
-  ======================== */
-    if (!email.endsWith("@gmail.com"))
-      return (alert("Email phải có đuôi @gmail.com"), emailInput.focus());
-
-    const emailName = email.replace("@gmail.com", "");
-
-    if (emailName.length < 5)
-      return (
-        alert("Phần trước @gmail.com phải có trên 5 ký tự"),
-        emailInput.focus()
-      );
-    if (!/[a-zA-Z]/.test(emailName))
-      return (
-        alert("Phần trước @gmail.com phải có ít nhất 1 chữ cái"),
-        emailInput.focus()
-      );
-
-    // Không được chứa dấu tiếng Việt
-    if (/[À-ỹ]/.test(emailName)) {
-      alert("Phần trước @gmail.com không được chứa dấu tiếng Việt");
-      emailInput.focus();
-      return;
-    }
-
-    // Không được chứa ký tự đặc biệt
-    if (!/^[a-zA-Z0-9]+$/.test(emailName)) {
-      alert("Phần trước @gmail.com không được chứa ký tự đặc biệt");
-      emailInput.focus();
-      return;
-    }
-
-    /* =======================
-     5️⃣ ĐỊA CHỈ GIAO HÀNG
-  ======================== */
-
-    // Số nhà + Tên đường: cho phép số + chữ + dấu + khoảng trắng
-    if (!/^[a-zA-ZÀ-ỹ0-9\s]+$/.test(street))
-      return (
-        alert("Số nhà và tên đường không được chứa ký tự đặc biệt"),
-        streetInput.focus()
-      );
-
-    if (/[0-9]/.test(ward))
-      return (alert("Phường / xã không được chứa số"), wardInput.focus());
-
-    if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(ward))
-      return (
-        alert("Phường / xã không được chứa ký tự đặc biệt"),
-        wardInput.focus()
-      );
-
-    if (/[0-9]/.test(district))
-      return (alert("Quận / huyện không được chứa số"), districtInput.focus());
-
-    if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(district))
-      return (
-        alert("Quận / huyện không được chứa ký tự đặc biệt"),
-        districtInput.focus()
-      );
-
-    if (/[0-9]/.test(city))
-      return (alert("Tỉnh / thành phố không được chứa số"), cityInput.focus());
-
-    if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(city))
-      return (
-        alert("Tỉnh / thành phố không được chứa ký tự đặc biệt"),
-        cityInput.focus()
-      );
-
-    /* =======================
-     6️⃣ LƯU THÔNG TIN
-  ======================== */
     const address = {
       street,
       ward,
@@ -2040,7 +2048,12 @@ const app = {
 
     if (user) {
       this.loadUserState();
-      alert("Cập nhật thông tin thành công!");
+      if (successMessage)
+        successMessage.textContent = "Cập nhật thông tin thành công!";
+      // Clear error messages on success
+      for (const field of fields) {
+        this.displayFieldError(field, []);
+      }
     }
   },
   handleLogout() {
