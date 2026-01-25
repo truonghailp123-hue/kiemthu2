@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // E-COMMERCE APPLICATION - DATA LAYER & API
 // ============================================
 
@@ -1841,16 +1841,16 @@ const app = {
     }
 
     // 4️⃣ Email
-    if (!email.endsWith("@email.com")) {
-      alert("Email phải có đuôi @email.com");
+    if (!email.endsWith("@gmail.com")) {
+      alert("Email phải có đuôi @gmail.com");
       emailInput.focus();
       return;
     }
 
-    const emailName = email.replace("@email.com", "");
+    const emailName = email.replace("@gmail.com", "");
 
     if (emailName.length < 5) {
-      alert("Phần trước @email.com phải có trên 5 ký tự");
+      alert("Phần trước @gmail.com phải có trên 5 ký tự");
       emailInput.focus();
       return;
     }
@@ -1858,7 +1858,7 @@ const app = {
     // ❌ Không dấu, không ký tự đặc biệt (chỉ a-z A-Z 0-9)
     if (!/^[a-zA-Z0-9]+$/.test(emailName)) {
       alert(
-        "Phần trước @email.com chỉ được chứa chữ cái không dấu và số, không được chứa dấu tiếng Việt hoặc ký tự đặc biệt",
+        "Phần trước @gmail.com chỉ được chứa chữ cái không dấu và số, không được chứa dấu tiếng Việt hoặc ký tự đặc biệt",
       );
       emailInput.focus();
       return;
@@ -1916,18 +1916,18 @@ const app = {
 
       case "email":
         if (!value) errors.push("Email không được để trống");
-        else if (!value.endsWith("@email.com"))
-          errors.push("Email phải có đuôi @email.com");
+        else if (!value.endsWith("@gmail.com"))
+          errors.push("Email phải có đuôi @gmail.com");
         else {
-          const emailName = value.replace("@email.com", "");
+          const emailName = value.replace("@gmail.com", "");
           if (emailName.length < 5)
-            errors.push("Phần trước @email.com phải có trên 5 ký tự");
+            errors.push("Phần trước @gmail.com phải có trên 5 ký tự");
           else if (!/[a-zA-Z]/.test(emailName))
-            errors.push("Phần trước @email.com phải có ít nhất 1 chữ cái");
+            errors.push("Phần trước @gmail.com phải có ít nhất 1 chữ cái");
           else if (/[À-ỹ]/.test(emailName))
-            errors.push("Phần trước @email.com không được chứa dấu tiếng Việt");
+            errors.push("Phần trước @gmail.com không được chứa dấu tiếng Việt");
           else if (!/^[a-zA-Z0-9]+$/.test(emailName))
-            errors.push("Phần trước @email.com không được chứa ký tự đặc biệt");
+            errors.push("Phần trước @gmail.com không được chứa ký tự đặc biệt");
         }
         break;
 
