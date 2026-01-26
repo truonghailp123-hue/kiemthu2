@@ -849,11 +849,14 @@ const app = {
       // Prevent default form submission
     });
 
-    document
-      .getElementById("update-profile-btn")
-      ?.addEventListener("click", () => {
+    const updateBtn = document.getElementById("update-profile-btn");
+    if (updateBtn) {
+      updateBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         this.handleUpdateProfile();
       });
+    }
 
     document.getElementById("checkout-btn")?.addEventListener("click", () => {
       this.showPaymentModal();
@@ -1882,7 +1885,40 @@ const app = {
 
     this.store.loginUser(user.email, user.password);
     this.loadUserState();
-    this.showNotification("Đăng ký thành công!");
+
+    // Clear form đăng ký
+    usernameInput.value = "";
+    emailInput.value = "";
+    passwordInput.value = "";
+    confirmPasswordInput.value = "";
+
+    // Fill dữ liệu vào profile
+    document.getElementById("profile-name").value = username;
+    document.getElementById("profile-email").value = email;
+    document.getElementById("profile-phone").value = "";
+    document.getElementById("profile-street").value = "";
+    document.getElementById("profile-ward").value = "";
+    document.getElementById("profile-district").value = "";
+    document.getElementById("profile-city").value = "";
+
+    // Clear error messages
+    const fields = [
+      "name",
+      "phone",
+      "email",
+      "street",
+      "ward",
+      "district",
+      "city",
+    ];
+    for (const field of fields) {
+      const errorDiv = document.getElementById(`error-${field}`);
+      if (errorDiv) errorDiv.textContent = "";
+    }
+
+    this.showNotification(
+      "Đăng ký thành công! Vui lòng cập nhật thông tin đầy đủ.",
+    );
     this.switchTab("profile");
   },
 
@@ -2118,13 +2154,18 @@ const app = {
             box-shadow: var(--shadow-lg);
             z-index: 3000;
             animation: slideIn 0.3s;
+            cursor: pointer;
         `;
     notification.textContent = message;
-    document.body.appendChild(notification);
-    setTimeout(() => {
+    notification.title = "Click để đóng";
+
+    // Click để đóng
+    notification.addEventListener("click", () => {
       notification.style.animation = "slideOut 0.3s";
       setTimeout(() => notification.remove(), 300);
-    }, 2000);
+    });
+
+    document.body.appendChild(notification);
   },
 };
 
