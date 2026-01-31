@@ -234,44 +234,124 @@
       <section id="account-page" class="page">
         <div class="container">
           <div class="account-tabs">
-            <button class="tab-btn active" data-tab="login">Đăng Nhập</button>
-            <button class="tab-btn" data-tab="register">Đăng Ký</button>
-            <button class="tab-btn" data-tab="profile">Thông Tin</button>
+            <button
+              class="tab-btn active"
+              data-tab="login"
+              data-testid="tab-login"
+            >
+              Đăng Nhập
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="register"
+              data-testid="tab-register"
+            >
+              Đăng Ký
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="profile"
+              data-testid="tab-profile"
+            >
+              Thông Tin
+            </button>
           </div>
           <div class="tab-content active" id="login-tab">
             <h2>Đăng Nhập</h2>
             <form id="login-form" novalidate>
               <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="login-email" />
+                <label for="login-email">Email</label>
+                <input
+                  type="email"
+                  id="login-email"
+                  data-testid="login-email"
+                  placeholder="Nhập email"
+                />
               </div>
               <div class="form-group">
-                <label>Mật khẩu</label>
-                <input type="password" id="login-password" />
+                <label for="login-password">Mật khẩu</label>
+                <input
+                  type="password"
+                  id="login-password"
+                  data-testid="login-password"
+                  placeholder="Nhập mật khẩu"
+                />
               </div>
-              <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-testid="login-button"
+              >
+                Đăng Nhập
+              </button>
             </form>
           </div>
           <div class="tab-content" id="register-tab">
             <h2>Đăng Ký</h2>
             <form id="register-form" novalidate>
               <div class="form-group">
-                <label>Tài Khoản</label>
-                <input type="text" id="register-username" />
+                <label for="register-username">Tài Khoản</label>
+                <input
+                  type="text"
+                  id="register-username"
+                  data-testid="register-username"
+                  placeholder="Nhập tài khoản (5-25 ký tự, không dấu cách, không ký tự đặc biệt)"
+                />
+                <div
+                  id="error-register-username"
+                  class="error-message"
+                  data-testid="error-register-username"
+                ></div>
               </div>
               <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="register-email" />
+                <label for="register-email">Email</label>
+                <input
+                  type="email"
+                  id="register-email"
+                  data-testid="register-email"
+                  placeholder="Nhập email (@gmail.com)"
+                />
+                <div
+                  id="error-register-email"
+                  class="error-message"
+                  data-testid="error-register-email"
+                ></div>
               </div>
               <div class="form-group">
-                <label>Mật khẩu</label>
-                <input type="password" id="register-password" />
+                <label for="register-password">Mật khẩu</label>
+                <input
+                  type="password"
+                  id="register-password"
+                  data-testid="register-password"
+                  placeholder="Nhập mật khẩu (5-25 ký tự, không dấu cách)"
+                />
+                <div
+                  id="error-register-password"
+                  class="error-message"
+                  data-testid="error-register-password"
+                ></div>
               </div>
               <div class="form-group">
-                <label>Xác nhận mật khẩu</label>
-                <input type="password" id="register-confirm-password" />
+                <label for="register-confirm-password">Xác nhận mật khẩu</label>
+                <input
+                  type="password"
+                  id="register-confirm-password"
+                  data-testid="register-confirm-password"
+                  placeholder="Xác nhận mật khẩu"
+                />
+                <div
+                  id="error-register-confirm-password"
+                  class="error-message"
+                  data-testid="error-register-confirm-password"
+                ></div>
               </div>
-              <button type="submit" class="btn btn-primary">Đăng Ký</button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-testid="register-button"
+              >
+                Đăng Ký
+              </button>
             </form>
           </div>
           <div class="tab-content active" id="profile-tab">
@@ -284,8 +364,13 @@
                   type="text"
                   data-field="name"
                   data-testid="profile-name"
+                  placeholder="Nhập họ và tên"
                 />
-                <div id="error-name" class="error-message"></div>
+                <div
+                  id="error-name"
+                  class="error-message"
+                  data-testid="error-name"
+                ></div>
               </div>
 
               <div class="form-group">
@@ -295,8 +380,13 @@
                   type="text"
                   data-field="phone"
                   data-testid="profile-phone"
+                  placeholder="Nhập số điện thoại (10 chữ số, bắt đầu bằng 0)"
                 />
-                <div id="error-phone" class="error-message"></div>
+                <div
+                  id="error-phone"
+                  class="error-message"
+                  data-testid="error-phone"
+                ></div>
               </div>
 
               <div class="form-group">
@@ -306,8 +396,13 @@
                   type="text"
                   data-field="email"
                   data-testid="profile-email"
+                  placeholder="Nhập email (@gmail.com)"
                 />
-                <div id="error-email" class="error-message"></div>
+                <div
+                  id="error-email"
+                  class="error-message"
+                  data-testid="error-email"
+                ></div>
               </div>
 
               <div class="form-group">
@@ -317,8 +412,13 @@
                   type="text"
                   data-field="street"
                   data-testid="profile-street"
+                  placeholder="Nhập số nhà và tên đường"
                 />
-                <div id="error-street" class="error-message"></div>
+                <div
+                  id="error-street"
+                  class="error-message"
+                  data-testid="error-street"
+                ></div>
               </div>
 
               <div class="form-group">
@@ -328,8 +428,13 @@
                   type="text"
                   data-field="ward"
                   data-testid="profile-ward"
+                  placeholder="Nhập phường/xã"
                 />
-                <div id="error-ward" class="error-message"></div>
+                <div
+                  id="error-ward"
+                  class="error-message"
+                  data-testid="error-ward"
+                ></div>
               </div>
 
               <div class="form-group">
@@ -339,8 +444,13 @@
                   type="text"
                   data-field="district"
                   data-testid="profile-district"
+                  placeholder="Nhập quận/huyện"
                 />
-                <div id="error-district" class="error-message"></div>
+                <div
+                  id="error-district"
+                  class="error-message"
+                  data-testid="error-district"
+                ></div>
               </div>
 
               <div class="form-group">
@@ -350,20 +460,32 @@
                   type="text"
                   data-field="city"
                   data-testid="profile-city"
+                  placeholder="Nhập tỉnh/thành phố"
                 />
-                <div id="error-city" class="error-message"></div>
+                <div
+                  id="error-city"
+                  class="error-message"
+                  data-testid="error-city"
+                ></div>
               </div>
 
               <div
-                class="form-group"
-                style="margin-top: 2rem; display: flex; gap: 1rem"
+                class="form-actions"
+                style="
+                  margin-top: 3rem;
+                  display: flex;
+                  gap: 1rem;
+                  padding-top: 1.5rem;
+                  border-top: 1px solid #e2e8f0;
+                "
               >
                 <button
+                  id="update-profile-btn"
                   type="button"
                   class="btn btn-primary"
-                  id="update-profile-btn"
                   data-testid="update-profile-button"
                   aria-label="Cập nhật thông tin tài khoản"
+                  style="min-width: 120px; position: relative; z-index: 10"
                 >
                   <i class="fas fa-save"></i> Cập nhật
                 </button>
@@ -522,6 +644,9 @@
         </div>
       </div>
     </footer>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
 
     <script src="banhang.js"></script>
   </body>

@@ -1757,7 +1757,7 @@ const app = {
       this.showNotification("Đăng nhập thành công!");
       this.switchTab("profile");
     } else {
-      alert("Email hoặc mật khẩu không đúng!");
+      this.showErrorModal("Email hoặc mật khẩu không đúng!");
     }
   },
 
@@ -1774,102 +1774,100 @@ const app = {
     const password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
 
-    // 1️⃣ Không được để trống
+    // Validate username
     if (!username) {
-      alert("Tài khoản không được để trống");
+      this.showErrorModal("Tài khoản không được để trống");
       usernameInput.focus();
       return;
     }
-
-    if (!email) {
-      alert("Email không được để trống");
-      emailInput.focus();
-      return;
-    }
-
-    if (!password) {
-      alert("Mật khẩu không được để trống");
-      passwordInput.focus();
-      return;
-    }
-
-    if (!confirmPassword) {
-      alert("Vui lòng nhập xác nhận mật khẩu");
-      confirmPasswordInput.focus();
-      return;
-    }
-
-    // 2️⃣ Tài khoản
     if (username.length < 5) {
-      alert("Tài khoản phải có trên 5 ký tự");
+      this.showErrorModal("Tài khoản phải có trên 5 ký tự");
       usernameInput.focus();
       return;
     }
-
     if (username.length > 25) {
-      alert("Tài khoản phải có dưới 25 ký tự");
+      this.showErrorModal("Tài khoản phải có dưới 25 ký tự");
       usernameInput.focus();
       return;
     }
-
     if (username.includes(" ")) {
-      alert("Tài khoản không được chứa dấu cách");
+      this.showErrorModal("Tài khoản không được chứa dấu cách");
       usernameInput.focus();
       return;
     }
-
     if (/[^a-zA-Z0-9]/.test(username)) {
-      alert("Tài khoản không được chứa ký tự đặc biệt");
+      this.showErrorModal("Tài khoản không được chứa ký tự đặc biệt");
       usernameInput.focus();
       return;
     }
 
-    // 3️⃣ Mật khẩu
-    if (password.length < 5) {
-      alert("Mật khẩu phải có trên 5 ký tự");
-      passwordInput.focus();
+    // Validate email
+    if (!email) {
+      this.showErrorModal("Email không được để trống");
+      emailInput.focus();
       return;
     }
-
-    if (password.length > 25) {
-      alert("Mật khẩu phải có dưới 25 ký tự");
-      passwordInput.focus();
-      return;
-    }
-
-    if (password.includes(" ")) {
-      alert("Mật khẩu không được chứa dấu cách");
-      passwordInput.focus();
-      return;
-    }
-
-    // 4️⃣ Email
     if (!email.endsWith("@gmail.com")) {
-      alert("Email phải có đuôi @gmail.com");
+      this.showErrorModal("Email phải có đuôi @gmail.com");
       emailInput.focus();
       return;
     }
-
     const emailName = email.replace("@gmail.com", "");
-
     if (emailName.length < 5) {
-      alert("Phần trước @gmail.com phải có trên 5 ký tự");
+      this.showErrorModal("Phần trước @gmail.com phải có trên 5 ký tự");
       emailInput.focus();
       return;
     }
-
-    // ❌ Không dấu, không ký tự đặc biệt (chỉ a-z A-Z 0-9)
+    if (!/[a-zA-Z]/.test(emailName)) {
+      this.showErrorModal("Phần trước @gmail.com phải có ít nhất 1 chữ cái");
+      emailInput.focus();
+      return;
+    }
+    if (/[À-ỹ]/.test(emailName)) {
+      this.showErrorModal(
+        "Phần trước @gmail.com không được chứa dấu tiếng Việt",
+      );
+      emailInput.focus();
+      return;
+    }
     if (!/^[a-zA-Z0-9]+$/.test(emailName)) {
-      alert(
-        "Phần trước @gmail.com chỉ được chứa chữ cái không dấu và số, không được chứa dấu tiếng Việt hoặc ký tự đặc biệt",
+      this.showErrorModal(
+        "Phần trước @gmail.com không được chứa ký tự đặc biệt",
       );
       emailInput.focus();
       return;
     }
 
-    // 5️⃣ Xác nhận mật khẩu
+    // Validate password
+    if (!password) {
+      this.showErrorModal("Mật khẩu không được để trống");
+      passwordInput.focus();
+      return;
+    }
+    if (password.length < 5) {
+      this.showErrorModal("Mật khẩu phải có trên 5 ký tự");
+      passwordInput.focus();
+      return;
+    }
+    if (password.length > 25) {
+      this.showErrorModal("Mật khẩu phải có dưới 25 ký tự");
+      passwordInput.focus();
+      return;
+    }
+    if (password.includes(" ")) {
+      this.showErrorModal("Mật khẩu không được chứa dấu cách");
+      passwordInput.focus();
+      return;
+    }
+
+    // Validate confirm password
+    if (!confirmPassword) {
+      this.showErrorModal("Vui lòng nhập xác nhận mật khẩu");
+      confirmPasswordInput.focus();
+      return;
+    }
     if (password !== confirmPassword) {
-      alert("Xác nhận mật khẩu không khớp");
+      this.showErrorModal("Xác nhận mật khẩu không khớp");
       confirmPasswordInput.focus();
       return;
     }
@@ -1900,21 +1898,6 @@ const app = {
     document.getElementById("profile-ward").value = "";
     document.getElementById("profile-district").value = "";
     document.getElementById("profile-city").value = "";
-
-    // Clear error messages
-    const fields = [
-      "name",
-      "phone",
-      "email",
-      "street",
-      "ward",
-      "district",
-      "city",
-    ];
-    for (const field of fields) {
-      const errorDiv = document.getElementById(`error-${field}`);
-      if (errorDiv) errorDiv.textContent = "";
-    }
 
     this.showNotification(
       "Đăng ký thành công! Vui lòng cập nhật thông tin đầy đủ.",
@@ -2026,11 +2009,6 @@ const app = {
       "district",
       "city",
     ];
-    let hasErrors = false;
-
-    // Clear previous success message
-    const successMessage = document.getElementById("success-message");
-    if (successMessage) successMessage.textContent = "";
 
     // Validate all fields
     for (const field of fields) {
@@ -2038,16 +2016,12 @@ const app = {
       const value = input.value.trim();
       const errors = this.validateProfileField(field, value);
 
-      this.displayFieldError(field, errors);
-
       if (errors.length > 0) {
-        hasErrors = true;
+        // Hiển thị error modal và dừng
+        this.showErrorModal(errors[0]);
+        input.focus();
+        return;
       }
-    }
-
-    // If there are errors, stop here
-    if (hasErrors) {
-      return;
     }
 
     // Get values
@@ -2084,12 +2058,7 @@ const app = {
 
     if (user) {
       this.loadUserState();
-      if (successMessage)
-        successMessage.textContent = "Cập nhật thông tin thành công!";
-      // Clear error messages on success
-      for (const field of fields) {
-        this.displayFieldError(field, []);
-      }
+      this.showNotification("Cập nhật thông tin thành công!");
     }
   },
   handleLogout() {
@@ -2140,22 +2109,78 @@ const app = {
       .forEach((m) => (m.style.display = "none"));
   },
 
+  showErrorModal(message) {
+    // Create modal overlay
+    const overlay = document.createElement("div");
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5000;
+    `;
+
+    // Create modal box
+    const modal = document.createElement("div");
+    modal.style.cssText = `
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      text-align: center;
+      z-index: 5001;
+    `;
+
+    // Message
+    const messageEl = document.createElement("p");
+    messageEl.style.cssText = `
+      font-size: 1rem;
+      color: #ef4444;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    `;
+    messageEl.textContent = message;
+
+    // Button
+    const button = document.createElement("button");
+    button.textContent = "OK";
+    button.style.cssText = `
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    `;
+    button.onmouseover = () => {
+      button.style.background = "var(--primary-dark)";
+    };
+    button.onmouseout = () => {
+      button.style.background = "var(--primary-color)";
+    };
+    button.onclick = () => {
+      overlay.remove();
+    };
+
+    modal.appendChild(messageEl);
+    modal.appendChild(button);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+  },
+
   showNotification(message) {
     // Simple notification - can be enhanced
     const notification = document.createElement("div");
-    notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--success-color);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            box-shadow: var(--shadow-lg);
-            z-index: 3000;
-            animation: slideIn 0.3s;
-            cursor: pointer;
-        `;
+    notification.className = "notification";
     notification.textContent = message;
     notification.title = "Click để đóng";
 
@@ -2165,7 +2190,15 @@ const app = {
       setTimeout(() => notification.remove(), 300);
     });
 
-    document.body.appendChild(notification);
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.style.animation = "slideOut 0.3s";
+        setTimeout(() => notification.remove(), 300);
+      }
+    }, 3000);
+
+    document.getElementById("notification-container").appendChild(notification);
   },
 };
 
